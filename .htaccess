@@ -1,6 +1,7 @@
 RewriteEngine On
 
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-REQUEST_FILENAME
 
-RewriteRule ^(.*)$ index.php?url=$1 [QSA]
+# RewriteRule (/getbyid/([0-9]|[0-9][0-9]|[0-9][0-9][0-9]|[0-9][0-9][0-9][0-9])) index.php?url=$1&id=$2 [NC,QSA,L]
+RewriteRule ^(.*)$ index.php [QSA,L]
