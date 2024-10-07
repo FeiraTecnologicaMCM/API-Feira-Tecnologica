@@ -3,7 +3,7 @@
 namespace Api\Controllers;
 
 class HomeController{
-    public function index(){
+    public function index(): string{
         return 'Hello';
     }
 }

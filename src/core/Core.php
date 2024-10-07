@@ -21,14 +21,10 @@ class Core{
         foreach ($routes as $route) {
             // $pattern = '#^' . preg_replace('/\{id\}/', '([\w-]+)', $route['url']) . '$#';
             if(strtoupper($route['url']) == $url){
-                echo 'a';die();
                 [$controller, $action] = explode('@', $route['action']);
                 $controller = $controllerPrefix . $controller;
                 $extendController = new $controller();
-                $extendController->$action();
-            }
-            else{
-                echo 'ERRO 404';
+                $data = $extendController->$action();
             }
         }
     }
