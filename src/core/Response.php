@@ -6,7 +6,7 @@ class Response{
     private $data = [];
     private const _ACC_METHODS = ['GET','POST','PUT'];
     public function __construct(){
-        if(!$this->MethodExists(self::_ACC_METHODS)){
+        if(!$this->MethodExists($_SERVER['REQUEST_METHOD'])){
 
         }
     }
@@ -14,6 +14,6 @@ class Response{
         return in_array(strtoupper($method), self::_ACC_METHODS);
     }
     public static function RequestError(int $code, string $message){
-        
+
     }
 }
