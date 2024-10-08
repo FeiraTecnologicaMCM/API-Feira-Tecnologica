@@ -3,7 +3,10 @@
 namespace Api\Controllers;
 
 class HomeController{
-    public function index(): string{
-        return 'Hello';
+    public function index(): array{
+        return [
+            'message' => 'Welcome to Feira Tecnológica API :)',
+            'data' => null
+        ];
     }
 }

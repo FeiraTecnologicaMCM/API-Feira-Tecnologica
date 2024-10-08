@@ -6,9 +6,10 @@ use Api\Database, PDO;
 class ProjectController{
     private $db;
     public function __construct(){
+        //CONSTANTE DEFINIDA NO index.php
         $this->db = Database::getInstance(_CONF);
     }
-    public function get(){
+    public function get(): array{
         $query = $this->db->prepare("SELECT * FROM projetos");
         if($query->execute()){
             $results = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -21,9 +22,16 @@ class ProjectController{
             }else{
                 return [
                     'code'=> 200,
-                    'data' => 'No projects found in database'
+                    'data' => null,
+                    'message' => 'No projects found in database'
                 ];
             }
+        }else{
+            return [
+                'code' => 500,
+                'data' => null,
+                'message' => 'An error occurred'
+            ];
         }
     }
     public function getbyid(): void{
