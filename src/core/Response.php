@@ -1,10 +1,10 @@
 <?php
 
-namespace Api\Core\Response;
+namespace Api\Core;
 
 class Response{
     private $data = [];
-    private const _ACC_METHODS = ['GET','POST','PUT'];
+    private const _ACC_METHODS = ['GET','POST','PUT','DELETE'];
     public function __construct(string $method, array $params = []){
         if(!$this->MethodExists($method)){
             $this->RequestError(405, 'Method not allowed', $params);
@@ -18,19 +18,17 @@ class Response{
     private function MethodExists(string $method): bool{
         return in_array(strtoupper($method), self::_ACC_METHODS);
     }
-    public static function RequestError(int $code, string $message, array $params): void{
+    public function RequestError(int $code, string $message, array $params): void{
         header('Content-Type:application/json');
         http_response_code($code);
-        self::$data = [
-            'code' => $code,
-            'message' => $message,
-            'parameters' => $params,
-            'data' => null
-        ];
-        echo json_encode(self::$data);
+        $this->data['code'] = $code;
+        $this->data['message'] = $message;
+        $this->data['parameters'] = $params;
+        $this->data['data'] = null;
+        echo json_encode($this->data);
         die();
     }
-    public function AddToResponse(string $key, string $value): void{
+    public function AddToResponse(string $key, mixed $value): void{
         $this->data[$key] = $value;
     }
     public function SendResponse(int $code, string $message): void{

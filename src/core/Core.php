@@ -1,8 +1,7 @@
 <?php
 
 namespace Api\Core;
-use Api\Core\Response\Response;
-
+use Api\Core\Response;
 
 class Core{
     public static function load(array $routes): void{
@@ -26,10 +25,10 @@ class Core{
                 [$controller, $action] = explode('@', $route['action']);
                 $controller = $controllerPrefix . $controller;
                 $extendController = new $controller();
-                $data = $extendController->$action();
-                $response = new Response($_SERVER['REQUEST_URI'],$_GET);
+                $data = $extendController->$action($_SERVER['REQUEST_METHOD']);
+                $response = new Response($_SERVER['REQUEST_METHOD'],$_GET);
                 $response->AddToResponse('data', $data['data']);
-                $response->SendResponse($data['code'], 'Request OK');
+                $response->SendResponse($data['code'], $data['message']);
             }
         }
     }

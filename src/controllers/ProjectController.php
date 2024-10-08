@@ -9,6 +9,13 @@ class ProjectController{
         //CONSTANTE DEFINIDA NO index.php
         $this->db = Database::getInstance(_CONF);
     }
+    public function index(): array{
+        return [
+            'code' => 200,
+            'data' => null,
+            'message' => 'Projects route...'            
+        ];
+    }
     public function get(): array{
         $query = $this->db->prepare("SELECT * FROM projetos");
         if($query->execute()){
@@ -17,7 +24,8 @@ class ProjectController{
             if(count($results) > 0){
                 return [
                     'code' => 200,
-                    'data' => $results
+                    'data' => $results,
+                    'message' => 'Request OK'
                 ];
             }else{
                 return [
