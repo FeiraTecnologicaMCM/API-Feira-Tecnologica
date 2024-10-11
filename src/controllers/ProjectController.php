@@ -5,10 +5,12 @@ use Api\Database, PDO;
 
 class ProjectController{
     private $db;
+    
     public function __construct(){
         //CONSTANTE DEFINIDA NO index.php
         $this->db = Database::getInstance(_CONF);
     }
+
     public function index(): array{
         return [
             'code' => 200,
@@ -16,6 +18,7 @@ class ProjectController{
             'message' => 'Projects route...'            
         ];
     }
+
     public function get(): array{
         $query = $this->db->prepare("SELECT * FROM projetos");
         if($query->execute()){
