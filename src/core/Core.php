@@ -8,6 +8,10 @@ class Core{
         $urlArray = explode('/', $_SERVER['REQUEST_URI']);
         array_shift($urlArray);
         unset($urlArray[0]);
+        if(isset($urlArray[3])){
+            $param = $urlArray[3];
+            unset($urlArray[3]);
+        }
         $url = '';
 
         foreach($urlArray as $key => $value){
@@ -25,7 +29,7 @@ class Core{
                 [$controller, $action] = explode('@', $route['action']);
                 $controller = $controllerPrefix . $controller;
                 $extendController = new $controller();
-                $data = $extendController->$action($_SERVER['REQUEST_METHOD']);
+                $data = $extendController->$action($param);
                 $response = new Response($_SERVER['REQUEST_METHOD'],$_GET);
                 $response->AddToResponse('data', $data['data']);
                 $response->SendResponse($data['code'], $data['message']);

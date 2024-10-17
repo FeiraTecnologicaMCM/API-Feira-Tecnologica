@@ -16,17 +16,17 @@ class VotosController{
                 FROM Votos 
                 GROUP BY projeto_id 
                 ORDER BY total_votos DESC 
-                LIMIT 1";
+                LIMIT 10"; // Modificado para retornar os 10 mais votados
     
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC); // Usar fetchAll para pegar todos os resultados
     
-        if ($resultado) {
+        if ($resultados) {
             return [
                 'code' => 200,
-                'data' => $resultado,
-                'message' => 'Projeto mais votado encontrado.'
+                'data' => $resultados, // Retorna todos os projetos mais votados
+                'message' => 'Top 10 projetos mais votados encontrados.'
             ];
         } else {
             return [
