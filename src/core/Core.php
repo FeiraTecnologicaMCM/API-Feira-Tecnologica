@@ -8,6 +8,7 @@ class Core{
         $urlArray = explode('/', $_SERVER['REQUEST_URI']);
         array_shift($urlArray);
         unset($urlArray[0]);
+        $param = null;
         if(isset($urlArray[3])){
             $param = $urlArray[3];
             unset($urlArray[3]);
