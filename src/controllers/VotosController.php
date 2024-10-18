@@ -12,27 +12,37 @@ class VotosController{
     }
 
     public function projetoMaisVotado(): array {
-        $sql = "SELECT projeto_id, COUNT(*) as total_votos 
-                FROM Votos 
-                GROUP BY projeto_id 
-                ORDER BY total_votos DESC 
-                LIMIT 10"; // Modificado para retornar os 10 mais votados
+        try {
+            $sql = "SELECT ROW_NUMBER() OVER (ORDER BY total_votos DESC) as posicao, 
+                           projeto_id, 
+                           COUNT(*) as total_votos 
+                    FROM Votos 
+                    GROUP BY projeto_id 
+                    ORDER BY total_votos DESC 
+                    LIMIT 10"; // Retorna os 10 mais votados
     
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC); // Usar fetchAll para pegar todos os resultados
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-        if ($resultados) {
+            if ($resultados) {
+                return [
+                    'code' => 200,
+                    'data' => $resultados,
+                    'message' => 'Top 10 projetos mais votados encontrados.'
+                ];
+            } else {
+                return [
+                    'code' => 404,
+                    'data' => null,
+                    'message' => 'Nenhum voto registrado.'
+                ];
+            }
+        } catch (PDOException $e) {
             return [
-                'code' => 200,
-                'data' => $resultados, // Retorna todos os projetos mais votados
-                'message' => 'Top 10 projetos mais votados encontrados.'
-            ];
-        } else {
-            return [
-                'code' => 404,
+                'code' => 500,
                 'data' => null,
-                'message' => 'Nenhum voto registrado.'
+                'message' => 'Erro ao buscar projetos: ' . $e->getMessage()
             ];
         }
     }
